@@ -1,0 +1,1 @@
+ScummGEN is an open source utility allowing users to create SCUMM based adventure games. This project will hold scripts and other resources which, using ScummGEN, will be compiled to produce an adventure game to be run with ScummVM.
