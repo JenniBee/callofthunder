@@ -13,6 +13,7 @@ function objDoor_verb(var objA, var objB)
 	action
 	{
 		case verbWalk:
+			torchunlightable=false;
 			iceCaveEntrance = ICE_CAVE_DOOR_ENTRANCE;
 			Room_load(roomIceCave);
 			break;
@@ -61,21 +62,22 @@ function _roomIceCaveEntrance_haraldTopicRoot(var line)
 			Dialog_removeLine(_dialogHarald, HARALD_TOPIC_ROOT, HARALD_LINE_TORCH);
 			break;
 		case HARALD_LINE_BURN:
+			gotgas=true;
 			Actor_talk(actorHarald, "But I already gave you the torch.");
 			Script_waitForMessage();
 			Actor_talkEgo("Yes, but I need something to burn that ice wall.");
 			Script_waitForMessage();
-			Actor_talk(actorHarald, "Burn what??");
+			Actor_talk(actorHarald, "Burn what?");
 			Script_waitForMessage();
 			Actor_talkEgo("Don't we have a gas can?");
 			Script_waitForMessage();
-			Actor_talk(actorHarald, "Yes but why do you want to burn the ice?");
+			Actor_talk(actorHarald, "Yes, but why do you want to burn the ice?");
 			Script_waitForMessage();
-			Actor_talkEgo("Don't reck your brain, I'll tell you later.");
+			Actor_talkEgo("Don't rack your brain, I'll tell you later.");
 			Script_waitForMessage();
 			Actor_talk(actorHarald, "Okay. One moment, I'll get the petrol.");
 			Script_waitForMessage();
-			Script_delaySeconds(5);
+			Script_delaySeconds(1);
 			Actor_talk(actorHarald, "Okay...");
 			Script_waitForMessage();
 			Actor_talk(actorHarald, "Catch it!");
@@ -116,7 +118,6 @@ inline function roomIceCaveEntrance_init()
 	_dialogHarald = Dialog_new(N_HARALD_TOPICS);
 	Dialog_addTopic(_dialogHarald, HARALD_TOPIC_ROOT, _roomIceCaveEntrance_haraldTopicRoot);
 	Dialog_addLine(_dialogHarald, HARALD_TOPIC_ROOT, HARALD_LINE_TORCH, "Throw me a torch, I can't see anything.");
-	Dialog_addLine(_dialogHarald, HARALD_TOPIC_ROOT, HARALD_LINE_BURN, "Harald, I need something flammable! [VISIBLE after LOOKAT ice]");
 	Dialog_addLine(_dialogHarald, HARALD_TOPIC_ROOT, HARALD_LINE_LEAVE, "I'll talk to you later.");
 }
 
@@ -144,6 +145,13 @@ function roomIceCaveEntrance_entry()
 	Sentence_show();
 	Inventory_show();
 	Input_enable();
+
+if (torched == true && !gotgas)
+{
+	Dialog_addLine(_dialogHarald, HARALD_TOPIC_ROOT, HARALD_LINE_BURN, "Harald, I need something flammable!");
+}
+
+
 }
 
 // Room exit function

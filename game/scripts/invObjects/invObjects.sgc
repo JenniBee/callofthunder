@@ -11,8 +11,25 @@ function invWhip_verb(var objA, var objB)
 				case 0:
 					Sentence_setPrepo(PREPO_ON);
 					break;
-				case objEntrance:
+				case objHole:
+					if (!whipout)
+					{
 					Actor_talkEgo("There is no point in leaving now.");
+
+					}
+					else
+					{
+					Actor_talkEgo("Harald, I found the rune stone!");
+					Script_waitForMessage();
+					Actor_talkEgo("I'll throw you the whip.  Pull me up!");
+					Script_waitForMessage();
+					Actor_talkEgo("Here you go.  Catch!");
+					Script_waitForMessage();
+					Script_delaySeconds(1);
+					Actor_talk(actorHarald, "OK. I've got it.  I'll pull you up now.");
+					Script_waitForMessage();
+					Room_load(roomTheEnd);
+					}
 					break;
 				default:
 					Actor_talkEgo("Hmmm no.");
@@ -88,9 +105,9 @@ function invGasCan_verb(var objA, var objB)
 			break;
 		case verbLookAt:
 			if (iceCaveWallState == ICE_CAVE_WALL_ICED)
-				Actor_talkEgo("It's full with gasoline.");
+				Actor_talkEgo("It's full of gasoline.");
 			else
-				Actor_talkEgo("There's some petrol left.");
+				Actor_talkEgo("There's some gasoline left.");
 			break;
 	}
 }
@@ -110,6 +127,7 @@ function invRing_verb(var objA, var objB)
 					{
 						// TODO: Draw ring onto the wall
 						Actor_talkEgo("It fits!");
+						ringed = true;
 						Object_setOwner(invRing, 0);
 						if (Object_getOwner(invDagger) != VAR_EGO)
 							iceCaveWallState = ICE_CAVE_WALL_FIXED;
@@ -133,10 +151,7 @@ function invRuneStone_verb(var objA, var objB)
 	action
 	{
 		case verbLookAt:
-			Actor_talkEgo("Hmmm, no release date yet...");
-			Script_waitForMessage();
-			Actor_turnToDirection(ACTOR_DIR_SOUTH);
-			Actor_talkEgo("Looks like these guys need some help.");
+			Actor_talkEgo("It's full of SCUMM. I'll have to clean it up when I get back.");
 			break;
 	}
 }
@@ -173,10 +188,22 @@ function invDagger_verb(var objA, var objB)
 					if (iceCaveWallState == ICE_CAVE_WALL_BURNED) 
 					{
 						// TODO: Draw dagger onto the wall (stamp)
-						Actor_talkEgo("That fits perfectly!");
-						Object_setOwner(invRing, 0);
-						if (Object_getOwner(invRing) != VAR_EGO)
+						if (ringed == true)
+						{
+
+							Actor_talkEgo("That fits perfectly!");
+							Object_setOwner(invRing, 0);
+							if (Object_getOwner(invRing) != VAR_EGO)
 							iceCaveWallState = ICE_CAVE_WALL_FIXED;
+						}
+						else
+						{
+
+							Actor_talkEgo("It won't stay in position.");																Script_waitForMessage();
+							Actor_talkEgo("I think the cylindrical slot needs to be filled first.");	
+						}
+				
+	
 					}
 					else
 						Actor_talkEgo("That doesn't work.");
@@ -203,9 +230,13 @@ function objUnlitTorch_verb(var objA, var objB)
 					Sentence_setPrepo(PREPO_ON);
 					break;
 				case invFlintstones:
-					Actor_pickup(invLitTorch1);
-					Object_setOwner(invUnlitTorch, 0);
-					
+					if (!torchunlightable)
+						{
+						Actor_pickup(invLitTorch1);
+						Object_setOwner(invUnlitTorch, 0);
+						}
+					else
+						Actor_talkEgo("I'll wait until I'm in the cave to light it.");
 					break;
 				default:
 					Actor_talkEgo("That doesn't work!");
@@ -233,15 +264,15 @@ function invLitTorch1_verb(var objA, var objB)
 					{
 						Actor_talkEgo("It would take me ages to burn this massive ice wall...");
 						Script_waitForMessage();
+						torched = true;
 						Actor_talkEgo("I need some accelerant.");
-						Script_waitForMessage();
-						Actor_talkEgo("NOW, we would add dialog line HARALD_LINE_BURN.");
+
 						// Dialog_addLine(_dialogHarald, HARALD_TOPIC_ROOT, HARALD_LINE_BURN, "Harald, I need something flammable!");
 					}
 					else if (iceCaveWallState == ICE_CAVE_WALL_GAS)
 					{
 						// TODO: Burn animation
-						Actor_talkEgo("WOHO!");
+						Actor_talkEgo("Woah, ho!");
 						Script_waitForMessage();
 						Actor_talkEgo("Hey, there are some carvings behind the ice.");
 						iceCaveWallState = ICE_CAVE_WALL_BURNED;
@@ -274,7 +305,7 @@ function invBone_verb(var objA, var objB)
 				case invWhip:
 					break;
 				case invTornRope:
-					//Actor_talkEgo("I'll bind it onto the rope.");
+					//Actor_talkEgo("I'll tie it to the rope.");
 					// DONT use torn rope -> too short!!
 					Script_waitForMessage();
 					break;
@@ -310,7 +341,7 @@ function invAngularStone_verb(var objA, var objB)
 			}
 			break;
 		case verbLookAt:
-			Actor_talkEgo("That's some really strange looking stone.");
+			Actor_talkEgo("That's a really strange looking stone.");
 			break;
 	}
 }
@@ -352,8 +383,13 @@ function invFlintstones_verb(var objA, var objB)
 					Sentence_setPrepo(PREPO_ON);
 					break;
 				case invUnlitTorch:
-					Actor_pickup(invLitTorch1);
-					Object_setOwner(invUnlitTorch, 0);
+					if (!torchunlightable)
+						{
+						Actor_pickup(invLitTorch1);
+						Object_setOwner(invUnlitTorch, 0);
+						}
+					else
+						Actor_talkEgo("I'll wait until I'm in the cave to light it.");
 					break;
 				default:
 					Actor_talkEgo("That doesn't work!");

@@ -122,6 +122,13 @@ function _roomCredits_displayCredits()
 	_creditsRoom_displayTeamMember("SEBASTIEN RONSSE");
 	_creditsRoom_fadeTeamMember(CREDITS_LOW_INTENSITY, CREDITS_HIGH_INTENSITY, CREDITS_INTENSITY_STEP_UP);
 	Script_delaySeconds(2);
+	_creditsRoom_fadeTeamMember(CREDITS_HIGH_INTENSITY, CREDITS_LOW_INTENSITY, -CREDITS_INTENSITY_STEP_DOWN);
+	_creditsRoom_displayTeamMember("");
+	Script_delaySeconds(1);
+	Room_setIntensity(CREDITS_LOW_INTENSITY, creditsColor2, creditsColor2);
+	_creditsRoom_displayTeamMember("JENNIFER MCMURRAY");
+	_creditsRoom_fadeTeamMember(CREDITS_LOW_INTENSITY, CREDITS_HIGH_INTENSITY, CREDITS_INTENSITY_STEP_UP);
+	Script_delaySeconds(2);
 	_creditsRoom_fadeCredits(CREDITS_HIGH_INTENSITY, CREDITS_LOW_INTENSITY, -CREDITS_INTENSITY_STEP_DOWN);
 	Util_redraw();
 	_creditsRoom_displayTeamMember("");
@@ -139,6 +146,13 @@ function _roomCredits_displayCredits()
 	Script_delaySeconds(1);
 	Room_setIntensity(CREDITS_LOW_INTENSITY, creditsColor2, creditsColor2);
 	_creditsRoom_displayTeamMember("DOMINIK HASLINGER");
+	_creditsRoom_fadeCredits(CREDITS_LOW_INTENSITY, CREDITS_HIGH_INTENSITY, CREDITS_INTENSITY_STEP_UP);
+	Script_delaySeconds(2);
+	_creditsRoom_fadeTeamMember(CREDITS_HIGH_INTENSITY, CREDITS_LOW_INTENSITY, -CREDITS_INTENSITY_STEP_DOWN);
+	_creditsRoom_displayTeamMember("");
+	Script_delaySeconds(1);
+	Room_setIntensity(CREDITS_LOW_INTENSITY, creditsColor2, creditsColor2);
+	_creditsRoom_displayTeamMember("JENNIFER MCMURRAY");
 	_creditsRoom_fadeTeamMember(CREDITS_LOW_INTENSITY, CREDITS_HIGH_INTENSITY, CREDITS_INTENSITY_STEP_UP);
 	Script_delaySeconds(2);
 	_creditsRoom_fadeCredits(CREDITS_HIGH_INTENSITY, CREDITS_LOW_INTENSITY, -CREDITS_INTENSITY_STEP_DOWN);
@@ -151,6 +165,18 @@ function _roomCredits_displayCredits()
 	Room_setIntensity(CREDITS_LOW_INTENSITY, creditsColor2, creditsColor2);
 	_creditsRoom_displayTeamFunction("background art by:");
 	_creditsRoom_displayTeamMember("JENS DOBLIES");
+	_creditsRoom_fadeCredits(CREDITS_LOW_INTENSITY, CREDITS_HIGH_INTENSITY, CREDITS_INTENSITY_STEP_UP);
+	Script_delaySeconds(2);
+	_creditsRoom_fadeCredits(CREDITS_HIGH_INTENSITY, CREDITS_LOW_INTENSITY, -CREDITS_INTENSITY_STEP_DOWN);
+	Util_redraw();
+	_creditsRoom_displayTeamMember("");
+	Script_delaySeconds(1);
+
+	// Additional art
+	Room_setIntensity(CREDITS_LOW_INTENSITY, creditsColor1, creditsColor1);
+	Room_setIntensity(CREDITS_LOW_INTENSITY, creditsColor2, creditsColor2);
+	_creditsRoom_displayTeamFunction("additional art by:");
+	_creditsRoom_displayTeamMember("JENNIFER MCMURRAY");
 	_creditsRoom_fadeCredits(CREDITS_LOW_INTENSITY, CREDITS_HIGH_INTENSITY, CREDITS_INTENSITY_STEP_UP);
 	Script_delaySeconds(2);
 	_creditsRoom_fadeCredits(CREDITS_HIGH_INTENSITY, CREDITS_LOW_INTENSITY, -CREDITS_INTENSITY_STEP_DOWN);

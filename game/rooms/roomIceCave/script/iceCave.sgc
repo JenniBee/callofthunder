@@ -40,6 +40,7 @@ function objEntrance_verb(var objA, var objB)
 	action
 	{
 		case verbWalk:
+			torchunlightable=true;
 			Room_load(roomIceCaveEntrance);
 			break;
 	}
@@ -82,6 +83,16 @@ function objIce_verb(var objA, var objB)
 {
 	action
 	{
+		case verbUse:
+			if (iceCaveWallState == ICE_CAVE_WALL_FIXED)
+				{
+					Room_fade(ROOM_FADE_DISSOLVE_EFFECT_1, ROOM_FADE_DISSOLVE_EFFECT_1);
+					Room_load(roomIceCaveMechanism);
+				}
+			else
+				Actor_talkEgo("I don't think that will work.");
+			break;
+
 		case verbPickUp:
 			if (iceCaveWallState == ICE_CAVE_WALL_FIXED)
 			{
@@ -118,7 +129,7 @@ function objIce_verb(var objA, var objB)
 				Room_load(roomIceCaveMechanism);
 			}
 			else
-				Actor_talkEgo("Hm, it seems like there is something behind the ice.");
+				Actor_talkEgo("Hmm, it seems like there is something behind the ice.");
 			break;
 	}
 }
@@ -162,7 +173,7 @@ function objSkeleton_verb(var objA, var objB)
 			if (Object_getOwner(invBone) != VAR_EGO)
 				cutscene (CUTSCENE_TYPE_A)
 				{
-					Actor_talkEgo("Hmmm, I guess this bone could come in handy.");
+					Actor_talkEgo("Hmm, I guess this bone could come in handy.");
 					Script_waitForMessage();
 					Actor_animate(actorIndy, costIndy_pickUpLow);
 					Script_delay(PICK_UP_DELAY);
@@ -185,7 +196,7 @@ function objWall_verb(var objA, var objB)
 					{
 						Actor_animate(actorIndy, costIndy_pickUpMedium);
 						Script_delay(PICK_UP_DELAY);
-						Actor_talkEgo("It feels somehow loose.");
+						Actor_talkEgo("It feels somewhat loose.");
 					}
 			else if (Object_getOwner(invFlintstones) == actorIndy || Object_getOwner(invPointyStone) == actorIndy)
 				Actor_talkEgo("I don't need more stones.");
@@ -216,6 +227,7 @@ function _roomIceCave_checkMechanism()
 	{
 		cutscene (CUTSCENE_TYPE_A)
 		{
+			whipout = true;
 			// TODO: Trigger mechanism
 
 			// Shake for a while
@@ -224,13 +236,20 @@ function _roomIceCave_checkMechanism()
 			Script_waitForMessage();
 			Room_setShaking(false);
 
-			Actor_talkEgo("Now the water flows off...");
-			
+			Actor_pickup(invRuneStone);
+
+			Actor_talkEgo("There we go... it's a rune stone!");
+			Script_waitForMessage();
+			Actor_talkEgo("Alright, Jones...");
+			Script_waitForMessage();
+			Actor_talkEgo("You got what you came for.  Now it's time to get the hell out of here.");
+			Script_waitForMessage();
+
 			/*
 			// Pick up rune stone
 			Actor_pickup(invRuneStone);
 
-			Actor_talkEgo("There we go... it's a rune stone !");
+			Actor_talkEgo("There we go... it's a rune stone!");
 			Script_waitForMessage();
 			Actor_talkEgo("I'm a bit rusty, but let's try to find out what it says...");
 			Script_waitForMessage();
@@ -244,9 +263,20 @@ function _roomIceCave_checkMechanism()
 			Script_waitForMessage();
 			Actor_talkEgo("We're looking for MIDI music and sprite artists, so don't be shy and join us if you're up for the challenge!");
 			Script_waitForMessage();
+			Actor_talkEgo("Thanks for playing the Call of Thunder demo.");
+			Script_waitForMessage();
+			Actor_talkEgo("It's the test game for ScummGen.");
+			Script_waitForMessage();
+			Actor_talkEgo("So if you want to create games for the actual SCUMM engine, take a look at the source code.");
+			Script_waitForMessage();
+			Actor_talkEgo("That's it for this demo.  Hope you enjoyed it.");
+			Script_waitForMessage();
+
+Util_quit();
+
 */
 			// Add dialog line
-			Dialog_addLine(_dialogHarald, HARALD_TOPIC_ROOT, HARALD_LINE_GET_OUT, "Help me get out of here!");
+			// Dialog_addLine(_dialogHarald, HARALD_TOPIC_ROOT, HARALD_LINE_GET_OUT, "Help me get out of here!");
 		}
 	}
 	else
@@ -292,6 +322,13 @@ inline function _roomIceCave_displayCredits()
 	_roomIceCave_displayTeamMember("SEBASTIEN RONSSE");
 	_roomIceCave_fadeTeamMember(CREDITS_LOW_INTENSITY, CREDITS_HIGH_INTENSITY, CREDITS_INTENSITY_STEP_UP);
 	Script_delaySeconds(2);
+	_roomIceCave_fadeTeamMember(CREDITS_HIGH_INTENSITY, CREDITS_LOW_INTENSITY, -CREDITS_INTENSITY_STEP_DOWN);
+	_roomIceCave_displayTeamMember("");
+	Script_delaySeconds(1);
+	Room_setIntensity(CREDITS_LOW_INTENSITY, _creditsColor2, _creditsColor2);
+	_roomIceCave_displayTeamMember("JENNIFER MCMURRAY");
+	_roomIceCave_fadeTeamMember(CREDITS_LOW_INTENSITY, CREDITS_HIGH_INTENSITY, CREDITS_INTENSITY_STEP_UP);
+	Script_delaySeconds(2);
 	_roomIceCave_fadeCredits(CREDITS_HIGH_INTENSITY, CREDITS_LOW_INTENSITY, -CREDITS_INTENSITY_STEP_DOWN);
 	Util_redraw();
 	_roomIceCave_displayTeamMember("");
@@ -311,6 +348,13 @@ inline function _roomIceCave_displayCredits()
 	_roomIceCave_displayTeamMember("DOMINIK HASLINGER");
 	_roomIceCave_fadeTeamMember(CREDITS_LOW_INTENSITY, CREDITS_HIGH_INTENSITY, CREDITS_INTENSITY_STEP_UP);
 	Script_delaySeconds(2);
+	_roomIceCave_fadeTeamMember(CREDITS_HIGH_INTENSITY, CREDITS_LOW_INTENSITY, -CREDITS_INTENSITY_STEP_DOWN);
+	_roomIceCave_displayTeamMember("");
+	Script_delaySeconds(1);
+	Room_setIntensity(CREDITS_LOW_INTENSITY, _creditsColor2, _creditsColor2);
+	_roomIceCave_displayTeamMember("JENNIFER MCMURRAY");
+	_roomIceCave_fadeTeamMember(CREDITS_LOW_INTENSITY, CREDITS_HIGH_INTENSITY, CREDITS_INTENSITY_STEP_UP);
+	Script_delaySeconds(2);
 	_roomIceCave_fadeCredits(CREDITS_HIGH_INTENSITY, CREDITS_LOW_INTENSITY, -CREDITS_INTENSITY_STEP_DOWN);
 	Util_redraw();
 	_roomIceCave_displayTeamMember("");
@@ -321,6 +365,18 @@ inline function _roomIceCave_displayCredits()
 	Room_setIntensity(CREDITS_LOW_INTENSITY, _creditsColor2, _creditsColor2);
 	_roomIceCave_displayTeamFunction("background art by:");
 	_roomIceCave_displayTeamMember("JENS DOBLIES");
+	_roomIceCave_fadeCredits(CREDITS_LOW_INTENSITY, CREDITS_HIGH_INTENSITY, CREDITS_INTENSITY_STEP_UP);
+	Script_delaySeconds(2);
+	_roomIceCave_fadeCredits(CREDITS_HIGH_INTENSITY, CREDITS_LOW_INTENSITY, -CREDITS_INTENSITY_STEP_DOWN);
+	Util_redraw();
+	_roomIceCave_displayTeamMember("");
+	Script_delaySeconds(1);
+
+	// Additional art
+	Room_setIntensity(CREDITS_LOW_INTENSITY, _creditsColor1, _creditsColor1);
+	Room_setIntensity(CREDITS_LOW_INTENSITY, _creditsColor2, _creditsColor2);
+	_roomIceCave_displayTeamFunction("additional art by:");
+	_roomIceCave_displayTeamMember("JENNIFER MCMURRAY");
 	_roomIceCave_fadeCredits(CREDITS_LOW_INTENSITY, CREDITS_HIGH_INTENSITY, CREDITS_INTENSITY_STEP_UP);
 	Script_delaySeconds(2);
 	_roomIceCave_fadeCredits(CREDITS_HIGH_INTENSITY, CREDITS_LOW_INTENSITY, -CREDITS_INTENSITY_STEP_DOWN);
@@ -423,6 +479,7 @@ function _roomIceCave_intro()
 	// Wait and display Indiana Jones logo
 	try
 	{
+
 		Script_delaySeconds(1);
 		_roomIceCave_displayIJLogo();
 
@@ -445,7 +502,6 @@ function _roomIceCave_intro()
 thread _roomIceCave_lightThread()
 {
 	var i;
-	var torchLit;
 	var ambientLightIntensity;
 
 	// Initialize ambient light intensity
@@ -599,15 +655,15 @@ function roomIceCave_entry()
 			// Harald and Indy initial dialog
 			Interface_printLineColor(COLOR_WHITE);
 			Interface_printLineAt(60, 0);
-			Interface_printLine("Ok, I'm rapping of. Slowly give me some more rope...");
+			Interface_printLine("Ok, I'm tapering off. Slowly give me some more rope...");
 			Script_waitForMessage();
 			
 			Interface_printLineAt(60, 8);
-			Interface_printLine("Hey! That rope doesn't look very strong...");
+			Interface_printLine("That rope doesn't look very strong...");
 			Script_waitForMessage();
 			
 			Interface_printLineAt(60, 16);
-			Interface_printLine("Hey, I think it's bursting. Quick! Take me up!");
+			Interface_printLine("Hey! I think it's bursting. Quick! Pull me up!");
 			Script_waitForMessage();
 
 			Interface_printLineColor(COLOR_GORSE);
@@ -620,7 +676,7 @@ function roomIceCave_entry()
 			Interface_printLine("OUCH!");
 			Script_waitForMessage();
 			
-			Actor_talk(actorHarald, "Everything alright down there?");
+			Actor_talk(actorHarald, "Is everything alright down there?");
 			Script_waitForMessage();
 			Interface_printLineAt(60, 40);
 			Interface_printLine("I guess so, thanks!");
@@ -644,12 +700,14 @@ function roomIceCave_entry()
 			break;
 		
 		case ICE_CAVE_DOOR_ENTRANCE:
+	if (!torchLit)
+	{
 			// Setup lights
 			_roomIceCave_setupLights();
 			
 			// Launch lightning thread
 			_roomIceCave_lightThread();
-			
+	}			
 			// Set Touch Mode
 			if (Object_getOwner(invLitTorch1) != VAR_EGO)
 				Inventory_setTouchVerb(true);
@@ -679,6 +737,8 @@ function roomIceCave_entry()
 // Room exit function
 function roomIceCave_exit()
 {
+if (!torchLit)
+{
 	// Delete lights
 	Light_delete(_iceCaveEntranceOmniLight);
 	Light_delete(_iceCaveAmbientLight);
@@ -689,4 +749,5 @@ function roomIceCave_exit()
 	Light_removeArea(_iceCaveObjRingArea);
 	Light_removeArea(_iceCaveObjDaggerArea);
 	Light_removeArea(_iceCaveCostIndyArea);
+}
 }

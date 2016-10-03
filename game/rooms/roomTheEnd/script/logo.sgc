@@ -1,0 +1,18 @@
+// Entry function
+function roomTheEnd_entry()
+{
+
+	Object_setOwner(invLitTorch1, 0);
+	Sentence_disable();
+	Object_setOwner(invLitTorch2, 0);
+	Inventory_disable();
+	Object_setOwner(invLitTorch3, 0);
+
+
+Script_delaySeconds(2);
+
+	Object_setOwner(invLitTorch4, 0);
+
+	 Util_quit();
+}
+

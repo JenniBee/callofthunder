@@ -1,3 +1,11 @@
+// Variables related to inventory items
+var torched; // check to see if the ice was torched without gas 
+var gotgas; // check to see if gas is in the inventory
+var ringed; // check to see if the ring was added to the console
+var torchLit; // check to see if the torch is lit
+var torchunlightable; // check to see if in the cave entrance
+var whipout; // check to see if whipping the hole before the end
+
 // Global constants
 const true = 1;
 const false = 0;
